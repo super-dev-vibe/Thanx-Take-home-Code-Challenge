@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import {
   Box,
   Button,
@@ -17,18 +17,25 @@ import {
   createTheme,
   ThemeProvider,
   CssBaseline,
+  Snackbar,
+  Pagination,
+  Switch,
+  FormControlLabel,
 } from '@mui/material'
 
 const API_BASE = '/api'
 const DEMO_USER_ID = 1
+const HISTORY_PAGE_SIZE = 5
 
-const theme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: { main: '#1976d2' },
-    secondary: { main: '#dc004e' },
-  },
-})
+function getTheme(mode: 'light' | 'dark') {
+  return createTheme({
+    palette: {
+      mode,
+      primary: { main: '#1976d2' },
+      secondary: { main: '#dc004e' },
+    },
+  })
+}
 
 async function parseJson(res: Response): Promise<unknown> {
   const text = await res.text()
@@ -58,6 +65,22 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const [redeemingId, setRedeemingId] = useState<number | null>(null)
   const [topUpLoading, setTopUpLoading] = useState(false)
+  const [toast, setToast] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+    open: false,
+    message: '',
+    severity: 'success',
+  })
+  const [historyPage, setHistoryPage] = useState(1)
+  const [darkMode, setDarkMode] = useState(false)
+  const theme = useMemo(() => getTheme(darkMode ? 'dark' : 'light'), [darkMode])
+
+  const showToast = useCallback((message: string, severity: 'success' | 'error') => {
+    setToast({ open: true, message, severity })
+  }, [])
+
+  const closeToast = useCallback(() => {
+    setToast((t) => ({ ...t, open: false }))
+  }, [])
 
   const fetchPoints = useCallback(async () => {
     const res = await fetch(`${API_BASE}/users/${DEMO_USER_ID}/points`)
@@ -89,6 +112,13 @@ function App() {
     return () => { cancelled = true }
   }, [fetchPoints, fetchRewards, fetchRedemptions])
 
+  const historyTotalPages = Math.max(1, Math.ceil(redemptions.length / HISTORY_PAGE_SIZE))
+  const historyPageClamped = Math.min(historyPage, historyTotalPages)
+
+  useEffect(() => {
+    if (historyPage > historyTotalPages) setHistoryPage(1)
+  }, [redemptions.length, historyPage, historyTotalPages])
+
   const redeem = async (rewardId: number) => {
     setRedeemingId(rewardId)
     setError(null)
@@ -100,26 +130,34 @@ function App() {
       })
       const data = await parseJson(res) as { errors?: string[]; new_balance?: number; id?: number; reward_name?: string; points_cost?: number; redeemed_at?: string } | null
       if (!res.ok) {
-        setError(data?.errors?.join(', ') || 'Redemption failed')
+        const msg = data?.errors?.join(', ') || 'Redemption failed'
+        setError(msg)
+        showToast(msg.includes('points') ? "Failed: you don't have enough points." : msg, 'error')
         return
       }
       if (!data || data.new_balance == null) {
         setError('Invalid response from server')
+        showToast('Invalid response from server', 'error')
         return
       }
+      const rewardName = data.reward_name ?? 'Reward'
+      const cost = data.points_cost ?? 0
       setPoints((p) => (p ? { ...p, points_balance: data.new_balance! } : null))
       setRedemptions((prev) => [
         {
           id: data.id ?? 0,
           reward_id: rewardId,
-          reward_name: data.reward_name ?? '',
-          points_cost: data.points_cost ?? 0,
+          reward_name: rewardName,
+          points_cost: cost,
           redeemed_at: data.redeemed_at ?? new Date().toISOString(),
         },
         ...prev,
       ])
+      showToast(`Successfully redeemed ${rewardName} – ${cost} pts`, 'success')
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Request failed')
+      const msg = e instanceof Error ? e.message : 'Request failed'
+      setError(msg)
+      showToast(msg, 'error')
     } finally {
       setRedeemingId(null)
     }
@@ -138,13 +176,17 @@ function App() {
       if (!res.ok) {
         const msg = data?.errors?.length ? data.errors.join(', ') : data?.error ?? 'Top-up failed'
         setError(msg)
+        showToast(msg, 'error')
         return
       }
       if (data?.points_balance != null) {
         setPoints((p) => (p ? { ...p, points_balance: data.points_balance! } : null))
+        showToast('Successfully added 500 points', 'success')
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Request failed')
+      const msg = e instanceof Error ? e.message : 'Request failed'
+      setError(msg)
+      showToast(msg, 'error')
     } finally {
       setTopUpLoading(false)
     }
@@ -164,11 +206,24 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>
             Loyalty Rewards
           </Typography>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={darkMode}
+                onChange={(_, checked) => setDarkMode(checked)}
+                color="default"
+                size="small"
+              />
+            }
+            label={<Typography variant="body2" color="inherit">Invert</Typography>}
+            sx={{ mr: 1 }}
+            labelPlacement="start"
+          />
           {points !== null && (
             <>
               <Typography variant="body1" sx={{ mr: 2 }}>
@@ -188,7 +243,7 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <Container maxWidth="sm" sx={{ py: 3 }}>
+      <Container maxWidth="sm" component="main" sx={{ pt: 10, pb: 3 }}>
         {error && (
           <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
             {error}
@@ -231,18 +286,43 @@ function App() {
         {redemptions.length === 0 ? (
           <Typography color="text.secondary">No redemptions yet.</Typography>
         ) : (
-          <List dense>
-            {redemptions.map((r) => (
-              <ListItem key={r.id} divider>
-                <ListItemText
-                  primary={`${r.reward_name} (${r.points_cost} pts)`}
-                  secondary={new Date(r.redeemed_at).toLocaleString()}
-                />
-              </ListItem>
-            ))}
-          </List>
+          <>
+            <List dense>
+              {redemptions
+                .slice((historyPageClamped - 1) * HISTORY_PAGE_SIZE, historyPageClamped * HISTORY_PAGE_SIZE)
+                .map((r) => (
+                  <ListItem key={r.id} divider>
+                    <ListItemText
+                      primary={`${r.reward_name} (${r.points_cost} pts)`}
+                      secondary={new Date(r.redeemed_at).toLocaleString()}
+                    />
+                  </ListItem>
+                ))}
+            </List>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+              <Pagination
+                count={historyTotalPages}
+                page={historyPageClamped}
+                onChange={(_, page) => setHistoryPage(page)}
+                color="primary"
+                showFirstButton
+                showLastButton
+              />
+            </Box>
+          </>
         )}
       </Container>
+
+      <Snackbar
+        open={toast.open}
+        autoHideDuration={5000}
+        onClose={closeToast}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert onClose={closeToast} severity={toast.severity} variant="filled" sx={{ width: '100%' }}>
+          {toast.message}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   )
 }
