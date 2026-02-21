@@ -1,0 +1,942 @@
+  [1m[35m (2.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-02-21 02:22:45.082289', '2026-02-21 02:22:45.082293') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20250220000001)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "points_balance" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-02-21 02:22:54.286989', '2026-02-21 02:22:54.286993') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20250220000001)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "points_balance" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250220000001') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateRewards (20250220000002)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "rewards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "points_cost" integer NOT NULL, "description" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250220000002') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateRedemptions (20250220000003)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "redemptions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "reward_id" integer NOT NULL, "redeemed_at" datetime(6) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_14fa576d5b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_f8409c3b59"
+FOREIGN KEY ("reward_id")
+  REFERENCES "rewards" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_redemptions_on_user_id" ON "redemptions" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_redemptions_on_reward_id" ON "redemptions" ("reward_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_redemptions_on_user_id" ON "redemptions" ("user_id")[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateRedemptions (20250220000003)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "redemptions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "reward_id" integer NOT NULL, "redeemed_at" datetime(6) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_14fa576d5b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_f8409c3b59"
+FOREIGN KEY ("reward_id")
+  REFERENCES "rewards" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_redemptions_on_user_id" ON "redemptions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_redemptions_on_reward_id" ON "redemptions" ("reward_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20250220000003') RETURNING "version"[0m
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("id", "name", "points_balance", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", 1], ["name", "Demo User"], ["points_balance", 500], ["created_at", "2026-02-21 02:23:26.128253"], ["updated_at", "2026-02-21 02:23:26.128253"]]
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mReward Create (0.1ms)[0m  [1m[32mINSERT INTO "rewards" ("id", "name", "points_cost", "description", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", 1], ["name", "Free Coffee"], ["points_cost", 100], ["description", "Any size coffee on us"], ["created_at", "2026-02-21 02:23:26.136296"], ["updated_at", "2026-02-21 02:23:26.136296"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mReward Create (0.4ms)[0m  [1m[32mINSERT INTO "rewards" ("id", "name", "points_cost", "description", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", 2], ["name", "Free Pastry"], ["points_cost", 150], ["description", "One pastry of your choice"], ["created_at", "2026-02-21 02:23:26.138436"], ["updated_at", "2026-02-21 02:23:26.138436"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mReward Create (0.2ms)[0m  [1m[32mINSERT INTO "rewards" ("id", "name", "points_cost", "description", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", 3], ["name", "$5 Off"], ["points_cost", 250], ["description", "$5 off your next order of $15+"], ["created_at", "2026-02-21 02:23:26.140329"], ["updated_at", "2026-02-21 02:23:26.140329"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mReward Create (0.2ms)[0m  [1m[32mINSERT INTO "rewards" ("id", "name", "points_cost", "description", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", 4], ["name", "Free Entrée"], ["points_cost", 400], ["description", "Free entrée up to $12"], ["created_at", "2026-02-21 02:23:26.141873"], ["updated_at", "2026-02-21 02:23:26.141873"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:23:49 -0500
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:23:49 -0500
+Processing by StaticController#index as HTML
+Processing by StaticController#index as HTML
+Sent data  (0.2ms)
+Sent data  (0.1ms)
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.4ms)
+
+
+Completed 200 OK in 15ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:23:49 -0500
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:23:49 -0500
+Processing by StaticController#index as CSS
+Processing by StaticController#index as JS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+Sent data  (0.1ms)
+Sent data  (0.1ms)
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Completed 200 OK in 6ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:23:49 -0500
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (0.1ms)
+Completed 200 OK in 0ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:23:50 -0500
+Processing by StaticController#index as HTML
+Sent data  (0.1ms)
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:23:50 -0500
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:23:50 -0500
+Processing by StaticController#index as JS
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (0.1ms)
+Sent data  (0.1ms)
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Completed 200 OK in 2ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:24:01 -0500
+Processing by StaticController#index as HTML
+Sent data  (0.2ms)
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:24:01 -0500
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:24:01 -0500
+Processing by StaticController#index as CSS
+Processing by StaticController#index as JS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+Sent data  (0.2ms)
+Sent data  (0.0ms)
+Completed 200 OK in 2ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Completed 200 OK in 1ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:24:02 -0500
+Processing by StaticController#index as HTML
+Sent data  (0.9ms)
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:24:02 -0500
+Processing by StaticController#index as JS
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:24:02 -0500
+Sent data  (0.1ms)
+Completed 200 OK in 3ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (0.1ms)
+Completed 200 OK in 0ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:24:02 -0500
+Processing by StaticController#index as HTML
+Sent data  (0.1ms)
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:24:02 -0500
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:24:02 -0500
+Processing by StaticController#index as JS
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (0.1ms)
+Completed 200 OK in 0ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Sent data  (0.1ms)
+Completed 200 OK in 1ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:24:11 -0500
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (0.2ms)
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:25:54 -0500
+Processing by StaticController#index as HTML
+Sent data  (0.3ms)
+Completed 200 OK in 19ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:25:54 -0500
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:25:54 -0500
+Processing by StaticController#index as CSS
+Processing by StaticController#index as JS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+Sent data  (0.1ms)
+Sent data  (0.1ms)
+Completed 200 OK in 1ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Completed 200 OK in 3ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:25:54 -0500
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (1.2ms)
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:25:55 -0500
+Processing by StaticController#index as HTML
+Sent data  (0.1ms)
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:25:55 -0500
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:25:55 -0500
+Processing by StaticController#index as JS
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (0.1ms)
+Sent data  (0.1ms)
+Completed 200 OK in 3ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Completed 200 OK in 9ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:25:55 -0500
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (0.1ms)
+Completed 200 OK in 0ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:25:56 -0500
+Processing by StaticController#index as HTML
+Sent data  (0.1ms)
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:25:56 -0500
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:25:56 -0500
+Processing by StaticController#index as JS
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (0.2ms)
+Sent data  (0.0ms)
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Completed 200 OK in 6ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:25:56 -0500
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (0.1ms)
+Completed 200 OK in 1ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:29:32 -0500
+Processing by StaticController#index as HTML
+Sent data  (0.3ms)
+Completed 200 OK in 13ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:29:33 -0500
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:29:33 -0500
+Processing by StaticController#index as JS
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+Processing by StaticController#index as CSS
+Sent data  (0.2ms)
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Completed 200 OK in 12ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Sent data  (0.2ms)
+Completed 200 OK in 20ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/rewards" for 127.0.0.1 at 2026-02-20 21:29:33 -0500
+Started GET "/api/users/1/points" for 127.0.0.1 at 2026-02-20 21:29:33 -0500
+Started GET "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:29:33 -0500
+Processing by Api::RewardsController#index as */*
+Processing by Api::RedemptionsController#index as */*
+Processing by Api::PointsController#show as */*
+  Parameters: {"id" => "1"}
+  Parameters: {"id" => "1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (4.5ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" ORDER BY "rewards"."points_cost" ASC[0m
+Completed 200 OK in 139ms (Views: 0.2ms | ActiveRecord: 1.4ms (1 query, 0 cached) | GC: 0.1ms)
+
+
+Completed 200 OK in 152ms (Views: 0.2ms | ActiveRecord: 5.1ms (1 query, 0 cached) | GC: 0.1ms)
+
+
+  [1m[36mRedemption Load (0.2ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" INNER JOIN "rewards" ON "rewards"."id" = "redemptions"."reward_id" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."redeemed_at" DESC[0m  [["user_id", 1]]
+Completed 200 OK in 204ms (Views: 0.2ms | ActiveRecord: 20.4ms (2 queries, 0 cached) | GC: 0.1ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:29:39 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mRedemption Create (0.6ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:29:39.977529"], ["created_at", "2026-02-21 02:29:39.985411"], ["updated_at", "2026-02-21 02:29:39.985411"]]
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (2.1ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 400], ["updated_at", "2026-02-21 02:29:39.989650"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 28ms (Views: 0.2ms | ActiveRecord: 3.1ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:29:53 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mRedemption Create (0.8ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:29:53.997433"], ["created_at", "2026-02-21 02:29:53.998804"], ["updated_at", "2026-02-21 02:29:53.998804"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 300], ["updated_at", "2026-02-21 02:29:54.002103"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 10ms (Views: 0.1ms | ActiveRecord: 1.5ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:29:54 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mRedemption Create (1.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:29:54.167724"], ["created_at", "2026-02-21 02:29:54.172936"], ["updated_at", "2026-02-21 02:29:54.172936"]]
+  [1m[36mTRANSACTION (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 200], ["updated_at", "2026-02-21 02:29:54.193709"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 36ms (Views: 0.1ms | ActiveRecord: 3.5ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:29:54 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mRedemption Create (2.3ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:29:54.329711"], ["created_at", "2026-02-21 02:29:54.341512"], ["updated_at", "2026-02-21 02:29:54.341512"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 100], ["updated_at", "2026-02-21 02:29:54.350419"], ["id", 1]]
+  [1m[36mTRANSACTION (4.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 34ms (Views: 0.2ms | ActiveRecord: 7.8ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:29:54 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mRedemption Create (5.5ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:29:54.480242"], ["created_at", "2026-02-21 02:29:54.485590"], ["updated_at", "2026-02-21 02:29:54.485590"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (4.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 0], ["updated_at", "2026-02-21 02:29:54.497192"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 28ms (Views: 0.1ms | ActiveRecord: 10.0ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/topup" for 127.0.0.1 at 2026-02-20 21:29:58 -0500
+Processing by Api::TopupController#create as */*
+  Parameters: {"user_id" => 1, "points" => 500, "topup" => {"user_id" => 1, "points" => 500}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (1.3ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 500], ["updated_at", "2026-02-21 02:29:58.257015"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+[topup] user_id=1 added=500 balance=0->500
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.5ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/topup" for 127.0.0.1 at 2026-02-20 21:29:58 -0500
+Processing by Api::TopupController#create as */*
+  Parameters: {"user_id" => 1, "points" => 500, "topup" => {"user_id" => 1, "points" => 500}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 1000], ["updated_at", "2026-02-21 02:29:58.732131"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+[topup] user_id=1 added=500 balance=500->1000
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.8ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:29:59 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 3}, "id" => "1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (3.9ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mRedemption Create (6.0ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 3], ["redeemed_at", "2026-02-21 02:29:59.514783"], ["created_at", "2026-02-21 02:29:59.515634"], ["updated_at", "2026-02-21 02:29:59.515634"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mUser Update (3.3ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 750], ["updated_at", "2026-02-21 02:29:59.522784"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 20ms (Views: 0.1ms | ActiveRecord: 14.7ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:47:56 -0500
+Processing by StaticController#index as HTML
+Sent data  (1.1ms)
+Completed 200 OK in 16ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:47:56 -0500
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:47:56 -0500
+Processing by StaticController#index as CSS
+Processing by StaticController#index as JS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+Sent data  (0.1ms)
+Sent data  (0.1ms)
+Completed 200 OK in 6ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Completed 200 OK in 6ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:47:56 -0500
+Started GET "/api/users/1/points" for 127.0.0.1 at 2026-02-20 21:47:56 -0500
+Started GET "/api/rewards" for 127.0.0.1 at 2026-02-20 21:47:56 -0500
+Processing by Api::PointsController#show as */*
+  Parameters: {"id" => "1"}
+Processing by Api::RedemptionsController#index as */*
+Processing by Api::RewardsController#index as */*
+  Parameters: {"id" => "1"}
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (2.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" ORDER BY "rewards"."points_cost" ASC[0m
+Completed 200 OK in 151ms (Views: 0.3ms | ActiveRecord: 21.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Completed 200 OK in 59ms (Views: 0.1ms | ActiveRecord: 2.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mRedemption Load (4.2ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" INNER JOIN "rewards" ON "rewards"."id" = "redemptions"."reward_id" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."redeemed_at" DESC[0m  [["user_id", 1]]
+  [1m[36mReward Load (0.6ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Reward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Reward Load (1.9ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Reward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Reward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 252ms (Views: 0.4ms | ActiveRecord: 63.0ms (8 queries, 4 cached) | GC: 16.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2026-02-20 21:48:05 -0500
+Processing by StaticController#index as HTML
+Sent data  (0.1ms)
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-CVMkkUgL.js" for 127.0.0.1 at 2026-02-20 21:48:05 -0500
+Processing by StaticController#index as JS
+  Parameters: {"path" => "assets/index-CVMkkUgL"}
+Sent data  (0.2ms)
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/index-BvpmyyHR.css" for 127.0.0.1 at 2026-02-20 21:48:05 -0500
+Processing by StaticController#index as CSS
+  Parameters: {"path" => "assets/index-BvpmyyHR"}
+Sent data  (3.6ms)
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/api/users/1/points" for 127.0.0.1 at 2026-02-20 21:48:05 -0500
+Processing by Api::PointsController#show as */*
+Started GET "/api/rewards" for 127.0.0.1 at 2026-02-20 21:48:05 -0500
+  Parameters: {"id" => "1"}
+Processing by Api::RewardsController#index as */*
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.2ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" ORDER BY "rewards"."points_cost" ASC[0m
+Completed 200 OK in 5ms (Views: 1.0ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/vite.svg" for 127.0.0.1 at 2026-02-20 21:48:05 -0500
+Started GET "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:48:05 -0500
+Processing by StaticController#index as SVG
+  Parameters: {"path" => "vite"}
+Processing by Api::RedemptionsController#index as */*
+  Parameters: {"id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRedemption Load (0.3ms)[0m  [1m[34mSELECT "redemptions".* FROM "redemptions" INNER JOIN "rewards" ON "rewards"."id" = "redemptions"."reward_id" WHERE "redemptions"."user_id" = ? ORDER BY "redemptions"."redeemed_at" DESC[0m  [["user_id", 1]]
+Sent data  (0.2ms)
+  [1m[36mReward Load (0.2ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+Completed 200 OK in 10ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.6ms)
+
+
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Reward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Reward Load (0.8ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Reward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Reward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 20ms (Views: 0.2ms | ActiveRecord: 1.6ms (8 queries, 4 cached) | GC: 0.6ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:48:13 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (1.5ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:48:13.269002"], ["created_at", "2026-02-21 02:48:13.270336"], ["updated_at", "2026-02-21 02:48:13.270336"]]
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.6ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 650], ["updated_at", "2026-02-21 02:48:13.276547"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 18ms (Views: 0.1ms | ActiveRecord: 4.3ms (5 queries, 0 cached) | GC: 0.5ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:48:13 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (2.5ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:48:13.414088"], ["created_at", "2026-02-21 02:48:13.414881"], ["updated_at", "2026-02-21 02:48:13.414881"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (1.5ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 550], ["updated_at", "2026-02-21 02:48:13.418283"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 11ms (Views: 0.1ms | ActiveRecord: 3.0ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:48:13 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (2.0ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:48:13.565688"], ["created_at", "2026-02-21 02:48:13.566498"], ["updated_at", "2026-02-21 02:48:13.566498"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 450], ["updated_at", "2026-02-21 02:48:13.577218"], ["id", 1]]
+  [1m[36mTRANSACTION (7.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 24ms (Views: 0.1ms | ActiveRecord: 9.6ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:48:13 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (4.4ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:48:13.866503"], ["created_at", "2026-02-21 02:48:13.867360"], ["updated_at", "2026-02-21 02:48:13.867360"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (1.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 350], ["updated_at", "2026-02-21 02:48:13.873433"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 21ms (Views: 0.1ms | ActiveRecord: 6.5ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:48:14 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (5.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (6.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:48:14.011833"], ["created_at", "2026-02-21 02:48:14.016542"], ["updated_at", "2026-02-21 02:48:14.016542"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (4.9ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 250], ["updated_at", "2026-02-21 02:48:14.031902"], ["id", 1]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 37ms (Views: 0.1ms | ActiveRecord: 17.5ms (5 queries, 0 cached) | GC: 0.4ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:48:14 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.6ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (7.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:48:14.154393"], ["created_at", "2026-02-21 02:48:14.155209"], ["updated_at", "2026-02-21 02:48:14.155209"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (3.4ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 150], ["updated_at", "2026-02-21 02:48:14.164282"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 25ms (Views: 0.1ms | ActiveRecord: 11.0ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:48:17 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 2}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.4ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (1.0ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 2], ["redeemed_at", "2026-02-21 02:48:17.588695"], ["created_at", "2026-02-21 02:48:17.589506"], ["updated_at", "2026-02-21 02:48:17.589506"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.6ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 0], ["updated_at", "2026-02-21 02:48:17.594048"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 10ms (Views: 0.1ms | ActiveRecord: 2.4ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/topup" for 127.0.0.1 at 2026-02-20 21:48:19 -0500
+Processing by Api::TopupController#create as */*
+  Parameters: {"user_id" => 1, "points" => 500, "topup" => {"user_id" => 1, "points" => 500}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (1.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 500], ["updated_at", "2026-02-21 02:48:19.197116"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+[topup] user_id=1 added=500 balance=0->500
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 1.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:48:21 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 4}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (1.3ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 4], ["redeemed_at", "2026-02-21 02:48:21.440691"], ["created_at", "2026-02-21 02:48:21.441649"], ["updated_at", "2026-02-21 02:48:21.441649"]]
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 100], ["updated_at", "2026-02-21 02:48:21.448113"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 12ms (Views: 0.1ms | ActiveRecord: 3.2ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:53:33 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (0.5ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:53:33.874558"], ["created_at", "2026-02-21 02:53:33.877223"], ["updated_at", "2026-02-21 02:53:33.877223"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 0], ["updated_at", "2026-02-21 02:53:33.880812"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 16ms (Views: 0.1ms | ActiveRecord: 2.2ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/topup" for 127.0.0.1 at 2026-02-20 21:53:37 -0500
+Processing by Api::TopupController#create as */*
+  Parameters: {"user_id" => 1, "points" => 500, "topup" => {"user_id" => 1, "points" => 500}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 500], ["updated_at", "2026-02-21 02:53:37.017477"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+[topup] user_id=1 added=500 balance=0->500
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.8ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/topup" for 127.0.0.1 at 2026-02-20 21:53:37 -0500
+Processing by Api::TopupController#create as */*
+  Parameters: {"user_id" => 1, "points" => 500, "topup" => {"user_id" => 1, "points" => 500}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.7ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 1000], ["updated_at", "2026-02-21 02:53:37.692758"], ["id", 1]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+[topup] user_id=1 added=500 balance=500->1000
+Completed 200 OK in 7ms (Views: 0.1ms | ActiveRecord: 1.5ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:53:39 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.7ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (0.4ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:53:39.062946"], ["created_at", "2026-02-21 02:53:39.064487"], ["updated_at", "2026-02-21 02:53:39.064487"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 900], ["updated_at", "2026-02-21 02:53:39.066972"], ["id", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 10ms (Views: 0.2ms | ActiveRecord: 2.0ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:53:39 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 2}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.2ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (0.7ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 2], ["redeemed_at", "2026-02-21 02:53:39.832987"], ["created_at", "2026-02-21 02:53:39.834003"], ["updated_at", "2026-02-21 02:53:39.834003"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 750], ["updated_at", "2026-02-21 02:53:39.837602"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 9ms (Views: 0.1ms | ActiveRecord: 2.0ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:53:40 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 3}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (0.8ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 3], ["redeemed_at", "2026-02-21 02:53:40.850128"], ["created_at", "2026-02-21 02:53:40.851080"], ["updated_at", "2026-02-21 02:53:40.851080"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 500], ["updated_at", "2026-02-21 02:53:40.856585"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (7.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 33ms (Views: 5.2ms | ActiveRecord: 9.3ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:53:41 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 2}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.4ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (5.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 2], ["redeemed_at", "2026-02-21 02:53:41.501597"], ["created_at", "2026-02-21 02:53:41.502635"], ["updated_at", "2026-02-21 02:53:41.502635"]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (1.2ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 350], ["updated_at", "2026-02-21 02:53:41.511911"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 21ms (Views: 0.5ms | ActiveRecord: 7.6ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:53:41 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 2}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (0.4ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 2], ["redeemed_at", "2026-02-21 02:53:41.667872"], ["created_at", "2026-02-21 02:53:41.668785"], ["updated_at", "2026-02-21 02:53:41.668785"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 200], ["updated_at", "2026-02-21 02:53:41.670163"], ["id", 1]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 11ms (Views: 0.1ms | ActiveRecord: 1.6ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:53:41 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 2}, "id" => "1"}
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.7ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (1.2ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 2], ["redeemed_at", "2026-02-21 02:53:41.861215"], ["created_at", "2026-02-21 02:53:41.863159"], ["updated_at", "2026-02-21 02:53:41.863159"]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (2.3ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 50], ["updated_at", "2026-02-21 02:53:41.867026"], ["id", 1]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 17ms (Views: 0.1ms | ActiveRecord: 7.5ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/topup" for 127.0.0.1 at 2026-02-20 21:55:34 -0500
+Processing by Api::TopupController#create as */*
+  Parameters: {"user_id" => 1, "points" => 500, "topup" => {"user_id" => 1, "points" => 500}}
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.9ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 550], ["updated_at", "2026-02-21 02:55:34.920135"], ["id", 1]]
+  [1m[36mTRANSACTION (1.5ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+[topup] user_id=1 added=500 balance=50->550
+Completed 200 OK in 7ms (Views: 0.1ms | ActiveRecord: 4.0ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/topup" for 127.0.0.1 at 2026-02-20 21:55:35 -0500
+Processing by Api::TopupController#create as */*
+  Parameters: {"user_id" => 1, "points" => 500, "topup" => {"user_id" => 1, "points" => 500}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (3.0ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 1050], ["updated_at", "2026-02-21 02:55:35.734865"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+[topup] user_id=1 added=500 balance=550->1050
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 3.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:55:36 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (4.1ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:55:36.609823"], ["created_at", "2026-02-21 02:55:36.610628"], ["updated_at", "2026-02-21 02:55:36.610628"]]
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (2.8ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 950], ["updated_at", "2026-02-21 02:55:36.617934"], ["id", 1]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 20ms (Views: 0.1ms | ActiveRecord: 11.0ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:55:37 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 2}, "id" => "1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (0.4ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 2], ["redeemed_at", "2026-02-21 02:55:37.758574"], ["created_at", "2026-02-21 02:55:37.759477"], ["updated_at", "2026-02-21 02:55:37.759477"]]
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 800], ["updated_at", "2026-02-21 02:55:37.768735"], ["id", 1]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 17ms (Views: 0.1ms | ActiveRecord: 1.2ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:55:39 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 3}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (0.6ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 3], ["redeemed_at", "2026-02-21 02:55:39.285378"], ["created_at", "2026-02-21 02:55:39.289374"], ["updated_at", "2026-02-21 02:55:39.289374"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (7.2ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 550], ["updated_at", "2026-02-21 02:55:39.298335"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (3.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 26ms (Views: 0.1ms | ActiveRecord: 13.5ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:55:39 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 3}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.1ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (0.4ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 3], ["redeemed_at", "2026-02-21 02:55:39.841912"], ["created_at", "2026-02-21 02:55:39.843103"], ["updated_at", "2026-02-21 02:55:39.843103"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 300], ["updated_at", "2026-02-21 02:55:39.844416"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 5ms (Views: 0.1ms | ActiveRecord: 1.0ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:55:41 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 3}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.2ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (0.5ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 3], ["redeemed_at", "2026-02-21 02:55:41.341672"], ["created_at", "2026-02-21 02:55:41.342439"], ["updated_at", "2026-02-21 02:55:41.342439"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 50], ["updated_at", "2026-02-21 02:55:41.344771"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 7ms (Views: 0.1ms | ActiveRecord: 1.8ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/topup" for 127.0.0.1 at 2026-02-20 21:55:43 -0500
+Processing by Api::TopupController#create as */*
+  Parameters: {"user_id" => 1, "points" => 500, "topup" => {"user_id" => 1, "points" => 500}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 550], ["updated_at", "2026-02-21 02:55:43.138597"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+[topup] user_id=1 added=500 balance=50->550
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.5ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:55:44 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 4}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (4.8ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 4], ["redeemed_at", "2026-02-21 02:55:44.140713"], ["created_at", "2026-02-21 02:55:44.143285"], ["updated_at", "2026-02-21 02:55:44.143285"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (3.8ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 150], ["updated_at", "2026-02-21 02:55:44.149656"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 16ms (Views: 0.1ms | ActiveRecord: 8.3ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/users/1/redemptions" for 127.0.0.1 at 2026-02-20 21:55:45 -0500
+Processing by Api::RedemptionsController#create as */*
+  Parameters: {"redemption" => {"reward_id" => 1}, "id" => "1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mReward Load (0.0ms)[0m  [1m[34mSELECT "rewards".* FROM "rewards" WHERE "rewards"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mRedemption Create (2.6ms)[0m  [1m[32mINSERT INTO "redemptions" ("user_id", "reward_id", "redeemed_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["user_id", 1], ["reward_id", 1], ["redeemed_at", "2026-02-21 02:55:45.352594"], ["created_at", "2026-02-21 02:55:45.353422"], ["updated_at", "2026-02-21 02:55:45.353422"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mUser Update (2.3ms)[0m  [1m[33mUPDATE "users" SET "points_balance" = ?, "updated_at" = ? WHERE "users"."id" = ?[0m  [["points_balance", 50], ["updated_at", "2026-02-21 02:55:45.357114"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 201 Created in 14ms (Views: 0.1ms | ActiveRecord: 5.3ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
