@@ -4,6 +4,20 @@ require "sqlite3"
 require "socket"
 
 DB = File.expand_path("db/development.sqlite3", __dir__)
+STATIC_ROOT = File.expand_path("../frontend/dist", __dir__)
+
+MIME_TYPES = {
+  ".html" => "text/html",
+  ".js"   => "application/javascript",
+  ".css"  => "text/css",
+  ".ico"  => "image/x-icon",
+  ".svg"  => "image/svg+xml",
+  ".png"  => "image/png",
+  ".jpg"  => "image/jpeg",
+  ".jpeg" => "image/jpeg",
+  ".woff" => "font/woff",
+  ".woff2"=> "font/woff2",
+}.freeze
 
 def db
   @db ||= begin
@@ -31,6 +45,27 @@ end
 def reply(sock, status, json)
   body = json.is_a?(String) ? json : JSON.generate(json)
   sock.write("HTTP/1.1 #{status}\r\nContent-Type: application/json\r\nAccess-Control-Allow-Origin: *\r\nContent-Length: #{body.bytesize}\r\n\r\n#{body}")
+end
+
+def send_response(sock, status, body, content_type = "application/json")
+  body = body.to_s
+  sock.write("HTTP/1.1 #{status}\r\nContent-Type: #{content_type}\r\nContent-Length: #{body.bytesize}\r\n\r\n#{body}")
+end
+
+def serve_static(method, path)
+  return nil unless method == "GET" && path !~ %r{\A/api}
+  safe_path = path.empty? || path == "/" ? "index.html" : path.gsub(%r{\A/}, "").split("/").reject { |x| x == ".." }.join("/")
+  return nil if safe_path.include?("..")
+  full = File.join(STATIC_ROOT, safe_path)
+  full = File.expand_path(full, STATIC_ROOT)
+  return nil unless full.start_with?(STATIC_ROOT)
+  if File.file?(full)
+    [200, File.binread(full), MIME_TYPES[File.extname(full)] || "application/octet-stream"]
+  else
+    index_path = File.join(STATIC_ROOT, "index.html")
+    return [404, "Not found", "text/plain"] unless File.file?(index_path)
+    [200, File.read(index_path), "text/html"]
+  end
 end
 
 def err(msg)
@@ -120,13 +155,19 @@ def status_line(code)
 end
 
 server = TCPServer.new("0.0.0.0", 3000)
-puts "API http://0.0.0.0:3000"
+puts "API + app http://0.0.0.0:3000 (open in browser for UI)"
 loop do
   sock = server.accept
   begin
     req = read_request(sock)
     next unless req
     method, path, body = req
+    static = serve_static(method, path)
+    if static
+      status, body_out, ctype = static
+      send_response(sock, status_line(status), body_out, ctype)
+      next
+    end
     code, payload = route(method, path, body)
     if code == 204
       sock.write("HTTP/1.1 204 No Content\r\nAccess-Control-Allow-Origin: *\r\nContent-Length: 0\r\n\r\n")
